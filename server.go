@@ -3,7 +3,7 @@ package gogcs
 import (
 	"net/http"
 
-	"github.com/boltdb/bolt"
+	bolt "go.etcd.io/bbolt"
 	"github.com/gorilla/mux"
 )
 

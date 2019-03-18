@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/boltdb/bolt"
+	bolt "go.etcd.io/bbolt"
 )
 
 func getProjectFromRequest(r *http.Request) string {
