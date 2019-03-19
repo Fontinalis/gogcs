@@ -14,7 +14,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	bolt "go.etcd.io/bbolt"
+	bolt "github.com/boltdb/bolt"
 )
 
 func (s *Server) objectInsert(w http.ResponseWriter, r *http.Request) {

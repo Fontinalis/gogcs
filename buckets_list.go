@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	bolt "go.etcd.io/bbolt"
+	bolt "github.com/boltdb/bolt"
 	storage "google.golang.org/api/storage/v1"
 )
 

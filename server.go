@@ -3,7 +3,7 @@ package gogcs
 import (
 	"net/http"
 
-	bolt "go.etcd.io/bbolt"
+	bolt "github.com/boltdb/bolt"
 	"github.com/gorilla/mux"
 )
 
@@ -17,7 +17,8 @@ func New() (*Server, error) {
 	s.r.Path("/b").Methods("GET").HandlerFunc(s.bucketsList)   // Buckets: list
 
 	// Objects
-	s.r.Path("/b/{bucket}/o").Methods("POST").HandlerFunc(s.objectInsert) // Objects: insert
+	s.r.Path("/b/{bucket}/o").Methods("POST").HandlerFunc(s.objectInsert)      // Objects: insert
+	s.r.Path("/b/{bucket}/o/{object}").Methods("GET").HandlerFunc(s.objectGet) // Objects: get
 
 	db, err := bolt.Open("gcs.db", 0600, nil)
 	if err != nil {
@@ -35,8 +36,9 @@ func New() (*Server, error) {
 }
 
 type Server struct {
-	r  *mux.Router
-	db *bolt.DB
+	r        *mux.Router
+	db       *bolt.DB
+	basePath string
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {

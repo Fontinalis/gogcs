@@ -4,13 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strings"
 
-	bolt "go.etcd.io/bbolt"
+	bolt "github.com/boltdb/bolt"
 )
 
 func getProjectFromRequest(r *http.Request) string {
@@ -75,9 +73,13 @@ func createObject(bName string, name string, bs []byte) error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(oPath+"/"+rName, bs, os.ModePerm)
+	f, err := os.OpenFile(oPath+rName, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	return nil
+	_, err = f.Write(bs)
+	if err != nil {
+		return err
+	}
+	return f.Close()
 }
